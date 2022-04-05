@@ -1,0 +1,177 @@
+# This is the configuration for Porter
+# You must define steps for each action, but the rest is optional
+# See https://porter.sh/author-bundles for documentation on how to configure your bundle
+# Uncomment out the sections below to take full advantage of what Porter can do!
+
+name: powerplatform-cli-az-hello
+version: 0.5.0
+description: "This CNAB bundle uses the https://github.com/squillace/porter-pac mixin to create an admin profile and create an environment in PowerApps."
+# TODO: update the registry to your own, e.g. myregistry
+registry: porterregistry.azurecr.io/vlele
+
+# If you want to customize the Dockerfile in use, uncomment the line below and update the referenced file.
+# See https://porter.sh/custom-dockerfile/
+#dockerfile: Dockerfile.tmpl
+
+mixins:
+  - az:
+      clientVersion: "latest"
+  - pac:
+    # The clientVersion value is required; this bundle mixin does not support "latest".
+      clientVersion: "1.8.6"
+
+install:
+  - az:
+      description: "Attaching to the Azure subscription.."
+      arguments:
+        - login
+      flags:
+        service-principal:
+        username: "{{bundle.credentials.AZURE_SP_CLIENT_ID}}"
+        password: "{{bundle.credentials.AZURE_SP_PASSWORD}}"
+        tenant: "{{bundle.credentials.AZURE_TENANT}}"
+  - az:
+      description: "Creating the Resource Group..."
+      arguments:
+        - group
+        - create
+      flags:
+        location: eastus
+        name: PORTER_BUNDLE_RG
+  - az:
+      description: "Creating the storage account..."
+      arguments:
+        - storage
+        - account
+        - create
+      flags:
+        name: fusiondemostorage
+        resource-group: PORTER_BUNDLE_RG
+        location: eastus
+        sku: Standard_LRS
+  - az:
+      description: "Create the table in the storage account..."
+      arguments:
+        - storage
+        - table
+        - create
+      flags:
+        name: fusiondemotable
+        account-name: fusiondemostorage
+  - pac:
+      description: "Attaching to the PowerApps tenant and environment.."
+      arguments:
+        - auth
+        - create
+      flags:
+        name: powerapp-tenant-admin
+        url: "https://org31f4b51c.crm.dynamics.com"
+        username: "{{bundle.credentials.POWER_USER_NAME}}"
+        password: "{{bundle.credentials.POWER_PASSWORD}}"
+  - pac:
+      description: "Importing the application...."
+      arguments:
+        - solution
+        - import
+      flags:
+        path: "./test.zip"
+# additional work goes here.
+uninstall:
+  - az:
+      description: "Attaching to the Azure subscription.."
+      arguments:
+        - login
+      flags:
+        service-principal:
+        username: "{{bundle.credentials.AZURE_SP_CLIENT_ID}}"
+        password: "{{bundle.credentials.AZURE_SP_PASSWORD}}"
+        tenant: "{{bundle.credentials.AZURE_TENANT}}"
+  - az:
+      description: "Deleting the table storage account..."
+      arguments:
+        - storage
+        - table
+        - delete
+      flags:
+        name: fusiondemotable
+        account-name: fusiondemostorage
+  - az:
+      description: "Deleting the storage account..."
+      arguments:
+        - storage
+        - account
+        - delete
+      flags:
+        name: fusiondemostorage
+        resource-group: PORTER_BUNDLE_RG
+        yes:
+  - pac:
+      description: "Logging into Power Apps as admin...."
+      arguments:
+        - auth
+        - create
+      flags:
+        name: uninstalling-powerapps
+        url: "https://org31f4b51c.crm.dynamics.com"
+        username: "{{bundle.credentials.POWER_USER_NAME}}"
+        password: "{{bundle.credentials.POWER_PASSWORD}}"
+  - pac:
+      description: "deleting the solution...."
+      arguments:
+        - solution
+        - delete
+      flags:
+        solution-name: "testhelloworld"
+
+
+
+
+# Below is an example of how to define credentials
+# See https://porter.sh/author-bundles/#credentials
+credentials:
+# Power Platform Credentials
+  - name: POWER_TENANT_ID
+    description: "The Azure tenant identifier."
+    env: POWER_TENANT_ID
+  - name: POWER_USER_NAME
+    description: "The user name"
+    env: POWER_USER_NAME
+  - name: POWER_PASSWORD
+    description: "The password or secret."
+    env: POWER_PASSWORD
+  - name: AZURE_SP_CLIENT_ID
+    description: "The Service Principal Client Id"
+    env: AZURE_SP_CLIENT_ID
+  - name: AZURE_SP_PASSWORD
+    description: "The Service Principal secret."
+    env: AZURE_PASSWORD
+  - name: AZURE_TENANT
+    description: "The Azure tenant identifier."
+    env: AZURE_TENANT
+# Below is an example of how to define parameters
+# See https://porter.sh/author-bundles/#parameters
+parameters:
+  - name: powerapp_env_name
+    type: string
+    description: "The name of the power app environment you will create."
+    default: powerenv
+# The following values are consumed by the Azure Portal and turned into visual blades and UI elements.
+custom:
+  com.azure.creatuidef:
+    blades:
+      Credentials:
+        displayOrder: 1
+        label: Power Platform Credentials
+    elements:
+      - name: POWER_USER_NAME
+        tooltip: A client id with permission to create resources in a tenant.
+        displayName: User name
+        displayOrder: 1
+        uitype: Microsoft.Common.TextBox
+        bladename: Credentials
+      - name: POWER_PASSWORD
+        displayOrder: 2
+        tooltip: A Power Platform SP password or secret for the client ID.
+        displayName: password
+        bladename: Credentials
+        uitype: Microsoft.Common.PasswordTextBox
