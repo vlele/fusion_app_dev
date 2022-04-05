@@ -1,0 +1,15 @@
+export PATH=$PATH:~/.porter
+ 
+ 
+porter version
+ 
+porter credentials list
+ 
+Porter create 
+Edit porter.yaml  (:q! to quit)
+ 
+porter credentials show pac-ac
+ 
+porter explain --reference porterregistry.azurecr.io/vlele/powerplatform-cli-az-hello:v0.5.0
+ 
+porter install --reference porterregistry.azurecr.io/vlele/powerplatform-cli-az-hello:v0.5.0 --cred pac-az
