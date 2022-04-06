@@ -1,0 +1,529 @@
+{
+	"info": {
+		"_postman_id": "0519477a-4940-44e3-b96a-e241e4e38c93",
+		"name": "Inventory-Orders",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetTokenNew",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"pm.globals.set(\"AuthToken\", jsonData.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "resource",
+							"value": "https://orgxxxxxxx.crm.dynamics.com",
+							"type": "text"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{loginurl}}/{{DirectoryID}}/oauth2/token",
+					"host": [
+						"{{loginurl}}"
+					],
+					"path": [
+						"{{DirectoryID}}",
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateBankAccountEntityDefinitions",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "OData-MaxVersion",
+						"value": "4.0",
+						"type": "text"
+					},
+					{
+						"key": "OData-Version",
+						"value": "4.0",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer    {{AuthToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n  \"@odata.type\": \"Microsoft.Dynamics.CRM.EntityMetadata\",  \r\n \"Attributes\": [  \r\n  {  \r\n   \"AttributeType\": \"String\",  \r\n   \"AttributeTypeName\": {  \r\n    \"Value\": \"StringType\"  \r\n   },  \r\n   \"Description\": {  \r\n     \"@odata.type\": \"Microsoft.Dynamics.CRM.Label\",  \r\n    \"LocalizedLabels\": [  \r\n     {  \r\n       \"@odata.type\": \"Microsoft.Dynamics.CRM.LocalizedLabel\",  \r\n      \"Label\": \"Type the name of the bank account\",  \r\n      \"LanguageCode\": 1033  \r\n     }  \r\n    ]  \r\n   },  \r\n   \"DisplayName\": {  \r\n     \"@odata.type\": \"Microsoft.Dynamics.CRM.Label\",  \r\n    \"LocalizedLabels\": [  \r\n     {  \r\n       \"@odata.type\": \"Microsoft.Dynamics.CRM.LocalizedLabel\",  \r\n      \"Label\": \"Account Name\",  \r\n      \"LanguageCode\": 1033  \r\n     }  \r\n    ]  \r\n   },  \r\n   \"IsPrimaryName\": true,  \r\n   \"RequiredLevel\": {  \r\n    \"Value\": \"None\",  \r\n    \"CanBeChanged\": true,  \r\n    \"ManagedPropertyLogicalName\": \"canmodifyrequirementlevelsettings\"  \r\n   },  \r\n   \"SchemaName\": \"new_AccountName\",  \r\n    \"@odata.type\": \"Microsoft.Dynamics.CRM.StringAttributeMetadata\",  \r\n   \"FormatName\": {  \r\n    \"Value\": \"Text\"  \r\n   },  \r\n   \"MaxLength\": 100  \r\n  }  \r\n ],  \r\n \"Description\": {  \r\n   \"@odata.type\": \"Microsoft.Dynamics.CRM.Label\",  \r\n  \"LocalizedLabels\": [  \r\n   {  \r\n     \"@odata.type\": \"Microsoft.Dynamics.CRM.LocalizedLabel\",  \r\n    \"Label\": \"An entity to store information about customer bank accounts\",  \r\n    \"LanguageCode\": 1033  \r\n   }  \r\n  ]  \r\n },  \r\n \"DisplayCollectionName\": {  \r\n   \"@odata.type\": \"Microsoft.Dynamics.CRM.Label\",  \r\n  \"LocalizedLabels\": [  \r\n   {  \r\n     \"@odata.type\": \"Microsoft.Dynamics.CRM.LocalizedLabel\",  \r\n    \"Label\": \"Bank Accounts\",  \r\n    \"LanguageCode\": 1033  \r\n   }  \r\n  ]  \r\n },  \r\n \"DisplayName\": {  \r\n   \"@odata.type\": \"Microsoft.Dynamics.CRM.Label\",  \r\n  \"LocalizedLabels\": [  \r\n   {  \r\n     \"@odata.type\": \"Microsoft.Dynamics.CRM.LocalizedLabel\",  \r\n    \"Label\": \"Bank Account\",  \r\n    \"LanguageCode\": 1033  \r\n   }  \r\n  ]  \r\n },  \r\n \"HasActivities\": false,  \r\n \"HasNotes\": false,  \r\n \"IsActivity\": false,  \r\n \"OwnershipType\": \"UserOwned\",  \r\n \"SchemaName\": \"new_BankAccount\"  \r\n} "
+				},
+				"url": {
+					"raw": "{{webapiurl}}EntityDefinitions",
+					"host": [
+						"{{webapiurl}}EntityDefinitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetBankAccountEntityTypeMetadata",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"BankaccountMetadataId\", jsonData.MetadataId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer    {{AuthToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{webapiurl}}EntityDefinitions(LogicalName='new_bankaccount')",
+					"host": [
+						"{{webapiurl}}EntityDefinitions(LogicalName='new_bankaccount')"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddAttributeToBankAccount",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "OData-MaxVersion",
+						"value": "4.0",
+						"type": "text"
+					},
+					{
+						"key": "OData-Version",
+						"value": "4.0",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer    {{AuthToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n \"AttributeType\": \"String\",  \r\n \"AttributeTypeName\": {  \r\n  \"Value\": \"StringType\"  \r\n },  \r\n \"Description\": {  \r\n  \"@odata.type\": \"Microsoft.Dynamics.CRM.Label\",  \r\n  \"LocalizedLabels\": [  \r\n   {  \r\n    \"@odata.type\": \"Microsoft.Dynamics.CRM.LocalizedLabel\",  \r\n    \"Label\": \"Type the name of the bank\",  \r\n    \"LanguageCode\": 1033  \r\n   }  \r\n  ]  \r\n },  \r\n \"DisplayName\": {  \r\n  \"@odata.type\": \"Microsoft.Dynamics.CRM.Label\",  \r\n  \"LocalizedLabels\": [  \r\n   {  \r\n    \"@odata.type\": \"Microsoft.Dynamics.CRM.LocalizedLabel\",  \r\n    \"Label\": \"Bank Name\",  \r\n    \"LanguageCode\": 1033  \r\n   }  \r\n  ]  \r\n },  \r\n \"RequiredLevel\": {  \r\n  \"Value\": \"None\",  \r\n  \"CanBeChanged\": true,  \r\n  \"ManagedPropertyLogicalName\": \"canmodifyrequirementlevelsettings\"  \r\n },  \r\n \"SchemaName\": \"new_BankName\",  \r\n \"@odata.type\": \"Microsoft.Dynamics.CRM.StringAttributeMetadata\",  \r\n \"FormatName\": {  \r\n  \"Value\": \"Text\"  \r\n },  \r\n \"MaxLength\": 100  \r\n}"
+				},
+				"url": {
+					"raw": "{{webapiurl}}EntityDefinitions({{BankaccountMetadataId}})/Attributes",
+					"host": [
+						"{{webapiurl}}EntityDefinitions({{BankaccountMetadataId}})"
+					],
+					"path": [
+						"Attributes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gettop3InventoryOrdersEntity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer    {{AuthToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{webapiurl}}cr92a_inventoryorderses?$top=3",
+					"host": [
+						"{{webapiurl}}cr92a_inventoryorderses"
+					],
+					"query": [
+						{
+							"key": "$top",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetQuanityAndDeliveredAttributeInventoryOrdersEntity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer    {{AuthToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{webapiurl}}cr92a_inventoryorderses?$select=cr92a_quantity,cr92a_delivered",
+					"host": [
+						"{{webapiurl}}cr92a_inventoryorderses"
+					],
+					"query": [
+						{
+							"key": "$select",
+							"value": "cr92a_quantity,cr92a_delivered"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetBankAccountEntityTypeAttributes",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer    {{AuthToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{webapiurl}}EntityDefinitions(LogicalName='new_bankaccount')?$select=LogicalName&$expand=Attributes",
+					"host": [
+						"{{webapiurl}}EntityDefinitions(LogicalName='new_bankaccount')"
+					],
+					"query": [
+						{
+							"key": "$select",
+							"value": "LogicalName"
+						},
+						{
+							"key": "$expand",
+							"value": "Attributes"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTop3RecordsInventoryOrdersEntity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer    {{AuthToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{webapiurl}}crac3_customerses(c8df273b-7896-e911-a983-000d3a1ca723)",
+					"host": [
+						"{{webapiurl}}crac3_customerses(c8df273b-7896-e911-a983-000d3a1ca723)"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetnventoryOrdersEntityByFilter",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer    {{AuthToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{webapiurl}}cr92a_inventoryorderses?$filter=cr92a_delivered eq false",
+					"host": [
+						"{{webapiurl}}cr92a_inventoryorderses"
+					],
+					"query": [
+						{
+							"key": "$filter",
+							"value": "cr92a_delivered eq false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateSingleInventoryOrdersEntity",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "OData-MaxVersion",
+						"value": "4.0",
+						"type": "text"
+					},
+					{
+						"key": "OData-Version",
+						"value": "4.0",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer    {{AuthToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \r\n            \"cr92a_totalprice\": 20000.0000000000,\r\n            \"cr92a_ordereddatetime\": \"2021-04-06T18:02:36Z\",\r\n            \"cr92a_delivered\": true,\r\n            \"cr92a_quantity\": 5,\r\n            \"cr92a_totalprice_base\": 20000.0000000000,\r\n            \"cr92a_delivereddatetime\": null\r\n        }"
+				},
+				"url": {
+					"raw": "{{webapiurl}}cr92a_inventoryorderses",
+					"host": [
+						"{{webapiurl}}cr92a_inventoryorderses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateSingleInventoryOrdersEntity",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "OData-MaxVersion",
+						"value": "4.0",
+						"type": "text"
+					},
+					{
+						"key": "OData-Version",
+						"value": "4.0",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer    {{AuthToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \r\n            \"cr92a_totalprice\": 20000.0000000000,\r\n            \"cr92a_delivered\": true,\r\n            \"cr92a_quantity\": 5,\r\n            \"cr92a_totalprice_base\": 20000.0000000000,\r\n            \"cr92a_delivereddatetime\": null,\r\n            \"cr92a_id\" : \"32\"\r\n        }"
+				},
+				"url": {
+					"raw": "{{webapiurl}}cr92a_inventoryorderses",
+					"host": [
+						"{{webapiurl}}cr92a_inventoryorderses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRelationShip",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer    {{AuthToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{webapiurl}}RelationshipDefinitions(SchemaName='cr92a_InventoryOrders_BoilerPartId_cr92a_')",
+					"host": [
+						"{{webapiurl}}RelationshipDefinitions(SchemaName='cr92a_InventoryOrders_BoilerPartId_cr92a_')"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteInventoryOrderEntity",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer    {{AuthToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{webapiurl}}cr92a_inventoryorderses({{DeleteOrderId}})",
+					"host": [
+						"{{webapiurl}}cr92a_inventoryorderses({{DeleteOrderId}})"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateSingleRecordAccountEntity",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "OData-MaxVersion",
+						"value": "4.0",
+						"type": "text"
+					},
+					{
+						"key": "OData-Version",
+						"value": "4.0",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer    {{AuthToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \r\n            \"name\": \"Record from postman\"\r\n        }"
+				},
+				"url": {
+					"raw": "{{webapiurl}}accounts",
+					"host": [
+						"{{webapiurl}}accounts"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
