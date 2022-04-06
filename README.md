@@ -15,3 +15,4 @@
 |Module8| ALM Accelerator | <a href="https://docs.microsoft.com/en-us/power-platform/alm/solution-concepts-alm" target="_blank">a) Solution-concepts ALM </a><br> <a href="https://docs.microsoft.com/en-us/power-platform/alm/solution-layers-alm" target="_blank">b) Solution Layers ALM </a><br> <a href="https://docs.microsoft.com/en-us/power-platform/guidance/coe/almacceleratorpowerplatform-components" target="_blank">c) ALM Accelerator </a>|
 |Module9| Licensing | <a href="https://www.microsoft.com/licensing/docs/grid/Microsoft-Power-Platform" target="_blank">a) Power platform Licensing guide </a>|
 |Module10| Security and DLP Policies | <a href="https://github.com/vlele/fusion_app_dev/blob/main/Scripts/DLP.ps1" target="_blank">a) DLP Powershell Command references </a>|
+|Module11| Azure Synapse Integration | <a href="https://docs.microsoft.com/en-us/power-apps/maker/data-platform/export-to-data-lake" target="_blank">a) Azure Synapse Link - Microsoft Docs </a>|
