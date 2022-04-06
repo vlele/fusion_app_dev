@@ -16,3 +16,4 @@
 |Module9| Licensing | <a href="https://www.microsoft.com/licensing/docs/grid/Microsoft-Power-Platform" target="_blank">a) Power platform Licensing guide </a>|
 |Module10| Security and DLP Policies | <a href="https://github.com/vlele/fusion_app_dev/blob/main/Scripts/DLP.ps1" target="_blank">a) DLP Powershell Command references </a>|
 |Module11| Azure Synapse Integration | <a href="https://docs.microsoft.com/en-us/power-apps/maker/data-platform/export-to-data-lake" target="_blank">a) Azure Synapse Link - Microsoft Docs </a>|
+|Module12| Monitoring | <a href="https://docs.microsoft.com/en-us/azure/azure-monitor/app/distributed-tracing" target="_blank">a) Distributed Tracing </a> <br> <a href="https://docs.microsoft.com/en-us/azure/azure-monitor/app/correlation" target="_blank">b) Telemetry Correlation </a> |
